@@ -130,3 +130,6 @@ dmypy.json
 
 # Vim swap files
 .*.sw[op]
+
+# Ghostwriter's backups
+*.md.backup
