@@ -1,0 +1,47 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "settings-collector"
+description = "Package for collecting settings from various sources"
+readme = "README.md"
+requires-python = ">=3.6"
+authors = [
+    { name="Vedran Sego", email = "vsego@vsego.org" },
+]
+license = "MIT"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Framework :: Bottle",
+    "Framework :: CherryPy",
+    "Framework :: Django",
+    "Framework :: Flask",
+    "Framework :: Pyramid",
+    "Framework :: TurboGears",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.5",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Utilities",
+    "Typing :: Typed"
+]
+keywords = ["settings", "configuration", "frameworks", "packages", "django", "flask", "environment"]
+dynamic = ["version"]
+
+[project.urls]
+"Homepage" = "https://github.com/vsego/settings-collector"
+"Bug Tracker" = "https://github.com/vsego/settings-collector/issues"
+
+[tool]
+
+[tool.hatch.version]
+path = "src/settings_collector/version.py"
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+  "/.github",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/settings_collector"]
