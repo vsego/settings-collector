@@ -5,6 +5,8 @@ build-backend = "hatchling.build"
 [project]
 name = "settings-collector"
 description = "Package for collecting settings from various sources"
+readme = "README.md"
+requires-python = ">=3.6"
 authors = [
     { name="Vedran Sego", email = "vsego@vsego.org" },
 ]
