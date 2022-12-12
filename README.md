@@ -258,6 +258,20 @@ question is a class method, the `@classmethod` decorator must be put before
 If some argument has its default defined in the function's or method's
 signature, its value will never be picked from the attached settings collector.
 
+Scopes are supported by an optional keyword argument `scope_arg` which holds
+the name of the argument that defines scope. If not set, the scopes will not be
+used. Here is an example:
+
+```python3
+@sc_defaults(my_settings, scope_arg="namespace")
+def f(foo, namespace=None):
+    return f"{foo}"
+
+print("Argument-provided foo: ", f("foot"))
+print("Default scope's foo:   ", f())
+print("Value of foo in scope1:", f(namespace="scope1"))
+```
+
 For more usage examples, see
 [`tests/test_defaults.py`](https://github.com/vsego/settings-collector/blob/master/tests/test_defaults.py).
 
