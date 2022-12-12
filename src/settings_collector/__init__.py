@@ -4,6 +4,7 @@ from .loaders.base import (  # noqa: W0611
     SC_LoaderBase, SC_LoaderFromAttribs, SC_LoaderFromDict,
 )
 from .collector import SettingsCollector  # noqa: W0611
+from .defaults import sc_defaults  # noqa: W0611
 from .exceptions import (  # noqa: W0611
     SC_Exception, SC_ConfigError, SC_WeirdBugError, SC_NotALoader,
 )

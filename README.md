@@ -27,8 +27,9 @@ config if it's used in a Flask project, etc.
 5. [Name cases](#name-cases)
 6. [Scopes](#scopes)
 7. [Fine tuning](#fine-tuning)
-8. [Custom loaders](#custom-loaders)
-9. [Testing custom loaders](#testing-custom-loaders)
+8. [Local function arguments](#local-function-arguments)
+9. [Custom loaders](#custom-loaders)
+10. [Testing custom loaders](#testing-custom-loaders)
 
 ## Supported frameworks
 
@@ -212,6 +213,53 @@ available attributes are as follows:
   when one of them is requested, thus minimising the overhead of the settings
   collector. If this is changed to `False`, each setting is loaded when
   requested and not before.
+
+## Local function arguments
+
+Because Settings Collectors are meant to be used by packages to pull the
+settings' default values from various frameworks, the packages themselves are
+not meant to be tied to any specific framework, which means that there could be
+no framework nor central configuration at all. One would still want their
+functions and classes to be configurable, and this is normally done through
+functions' and methods' arguments.
+
+To make it easier to achieve this, the package provides `@sc_defaults`
+decorator. Its purpose is to populate functions' and methods' arguments from a
+settings collector during runtime, assuming that the values were not given in
+the call nor as function's or method's defaults.
+
+A typical use case is this:
+
+```python
+class my_settings(SettingsCollector):
+
+    foo = SC_Setting("food")
+    bar = SC_Setting("bard")
+
+
+@sc_defaults(my_settings)
+def f(x, foo):
+    return f"{x}:{foo}"
+```
+
+Here, we can do several different calls (assuming that `foo` and `bar` are not
+set in the framework):
+
+* `f(17)` returns `"17:food"` because `x = 17` comes from the call, while `foo`
+  is unset and thus gets its value from `my_settings.foo`.
+
+* `f(17, "afoot")`, `f(17, foo="afoot")`, and `f(x=17, foo="afoot")` all return
+  `"17:afoot"` because both values were provided in the function call.
+
+The same can be done with methods in classes, with one caveat: if the method in
+question is a class method, the `@classmethod` decorator must be put before
+`@sc_defaults`.
+
+If some argument has its default defined in the function's or method's
+signature, its value will never be picked from the attached settings collector.
+
+For more usage examples, see
+[`tests/test_defaults.py`](https://github.com/vsego/settings-collector/blob/master/tests/test_defaults.py).
 
 ## Custom loaders
 
