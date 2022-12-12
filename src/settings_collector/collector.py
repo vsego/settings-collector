@@ -349,21 +349,18 @@ class SettingsCollector(metaclass=_SettingsCollectorMeta):
         )
 
     @classmethod
-    def _expand_settings_names(
+    def get_settings_names(
         cls,
         settings_names: Optional[Iterable[str]] = None,
-        as_type: Type[tuple | set] = tuple,
-    ) -> tuple | set:
+    ) -> tuple[str, ...]:
         """
         Return a sequence of settings' names.
 
         :param settings_names: A sequence of names to be returned. If set as
             `None`, all a sequence of all defined settings' names is returned.
-        :param as_type: Either a `tuple` or a `set`, defining the type of the
-            returned sequence.
         :return: A sequence of settings' names strings.
         """
-        return as_type(
+        return tuple(
             settings_names
             if settings_names else (
                 name
@@ -400,7 +397,7 @@ class SettingsCollector(metaclass=_SettingsCollectorMeta):
             if sc_data.parent is None:
                 result.update(cls._get_sc_default_values())
         if expand_names:
-            settings_names = cls._expand_settings_names(settings_names)
+            settings_names = cls.get_settings_names(settings_names)
         result.update(SC_LoadersManager.get_settings(cls, settings_names))
         cls._assign_settings_values(result)
         if greedy_load:
