@@ -32,6 +32,7 @@ dynamic = ["version"]
 [project.urls]
 "Homepage" = "https://github.com/vsego/settings-collector"
 "Bug Tracker" = "https://github.com/vsego/settings-collector/issues"
+"Changelog" = "https://github.com/vsego/settings-collector/blob/master/CHANGELOG.md"
 
 [tool]
 

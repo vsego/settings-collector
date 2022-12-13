@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added scopes support to `@sc_defaults` decorator
+- Added changelog URL to PyPI project
 
 ## [1.1.0] - 2022-12-12
 
