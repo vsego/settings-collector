@@ -26,6 +26,7 @@ class SC_WeirdBugError(SC_Exception):
             f" appease mypy",
         )
 
+
 class SC_NotALoader(SC_Exception):
     """
     Exception raised when something that should be a loader is not one.
@@ -33,3 +34,9 @@ class SC_NotALoader(SC_Exception):
 
     def __init__(self, name):
         super().__init__(f"{name} is not a settings loader")
+
+
+class SC_SettingsError(SC_Exception):
+    """
+    Exception raised when `sc_settings` gets broken.
+    """

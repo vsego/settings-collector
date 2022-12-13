@@ -28,8 +28,9 @@ config if it's used in a Flask project, etc.
 6. [Scopes](#scopes)
 7. [Fine tuning](#fine-tuning)
 8. [Local function arguments](#local-function-arguments)
-9. [Custom loaders](#custom-loaders)
-10. [Testing custom loaders](#testing-custom-loaders)
+9. [Settings in projects with no frameworks](#settings-in-projects-with-no-frameworks)
+10. [Custom loaders](#custom-loaders)
+11. [Testing custom loaders](#testing-custom-loaders)
 
 ## Supported frameworks
 
@@ -274,6 +275,39 @@ print("Value of foo in scope1:", f(namespace="scope1"))
 
 For more usage examples, see
 [`tests/test_defaults.py`](https://github.com/vsego/settings-collector/blob/master/tests/test_defaults.py).
+
+## Settings in projects with no frameworks
+
+Projects that do not use any of the supported or supporting frameworks can
+still adjust settings for those packages that support Settings Collector. This
+is done through a dictionary-like object called `sc_settings` and is used like
+this:
+
+```python
+from settings_collector import sc_settings
+
+# Set values one by one:
+sc_settings["prefix1__some_setting"] = ...
+sc_settings["prefix2__scope1__scope2__some_setting"] = ...
+...
+
+# Or, in bulk:
+sc_settings.update({
+    "prefix1__some_setting"]: ...,
+    "prefix2__scope1__scope2__some_setting"]: ...,
+    ...
+}
+```
+
+Note that you should never do `sc_setting = ...`. If you do, the loader
+responsible for reading this data will rebel by raising a `SC_SettingsError`
+exception.
+
+This can be used even without any other packages using Settings Collector, as a
+placeholder for your project's configuration, although it's a bit questionable
+what the benefits would be (over just having your own Flask-like `config`
+dictionary or Django-like class `settings`), especially if one does not need
+scopes.
 
 ## Custom loaders
 
