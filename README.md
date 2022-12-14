@@ -1,4 +1,4 @@
-# `settings-collector`: Settings collector class for Python
+# Settings Collector
 
 This Python 3.6+ package is meant to be used by other packages (i.e., not
 directly by final projects). Its purpose is to collect settings defined in
