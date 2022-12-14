@@ -74,6 +74,9 @@ class SC_LoadersManager:
         Return a generator of settings loader classes.
 
         For arguments, see :py:meth:`get_settings`.
+
+        :param settings_collector: A `SettingsCollector` (sub)class for which
+            the settings are being loaded).
         """
         if (
             settings_collector.SC_Config.exclude
@@ -119,7 +122,7 @@ class SC_LoadersManager:
         :param settings_collector: A `SettingsCollector` (sub)class for which
             the settings are being loaded.
         :param settings_names: Either `None` (meaning "all settings") or an
-            iterable of string names of the settings to load.
+            iterable of string names of the settings to load).
         :raise SC_ConfigError: Raised when attempting to use only unknown
             loaders (i.e., none of the `loaders` exist and `settings.exclude`
             is set to `False`). The logic here is that you may settings.exclude
