@@ -1,6 +1,6 @@
 from settings_collector import SettingsCollector, SC_Setting, sc_defaults
 
-from tests.utils import TestsBase
+from tests.utils import TestsBase, patch_env
 
 
 class my_settings(SettingsCollector):
@@ -10,6 +10,9 @@ class my_settings(SettingsCollector):
 
 
 class TestBasicFunctionality(TestsBase):
+
+    def tearDown(self):
+        my_settings.clear_cache()
 
     def test_defaults(self):
 
@@ -114,3 +117,15 @@ class TestBasicFunctionality(TestsBase):
         self.assertEqual(Foo(17).f(), "17:food")
         self.assertEqual(Foo(x=17).f(), "17:food")
         self.assertEqual(Foo(17, foo="afoot").f(), "17:afoot")
+
+    def test_defaults_with_scope(self):
+
+        @sc_defaults(my_settings, scope_arg="scope")
+        def f(x, foo, scope=""):
+            return f"{x}:{foo}"
+
+        with patch_env(foo="fool", scoped__foo="toe-foo"):
+            self.assertEqual(f(17), "17:fool")
+            self.assertEqual(f(17, "afoot"), "17:afoot")
+            self.assertEqual(f(17, scope="scoped"), "17:toe-foo")
+            self.assertEqual(f(17, "afoot", "scoped"), "17:afoot")
