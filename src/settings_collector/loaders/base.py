@@ -95,15 +95,13 @@ class SC_LoaderBase(metaclass=_SC_LoaderBaseMeta):
 
         try:
             result, success = cls.load_settings(prefix, settings_names)
-            if not success:
-                return None
         except Exception as e:
             if isinstance(e, cls. no_settings_exceptions):
                 return None
             else:
                 raise
         else:
-            return result
+            return result if success else None
 
     @classmethod
     def load_settings(

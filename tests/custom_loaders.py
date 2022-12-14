@@ -15,6 +15,12 @@ from settings_collector import (
 
 
 MOCK_LOADER_SETTINGS = {"foo": "bar"}
+MOCK_LOW_PRIORITY_LOADER_SETTINGS = {
+    "common": "common low", "low_only": "low",
+}
+MOCK_HIGH_PRIORITY_LOADER_SETTINGS = {
+    "common": "common high", "high_only": "high",
+}
 
 
 class MockLoaderException(Exception):
@@ -33,6 +39,30 @@ class SC_MockLoader(SC_LoaderBase):
             raise MockLoaderException(prefix)
         else:
             return MOCK_LOADER_SETTINGS, True
+
+
+class SC_MockLowPriorityLoader(SC_LoaderBase):
+
+    enabled = False
+    priority = -17
+
+    @classmethod
+    def load_settings(
+        cls, prefix: str, settings_names: list[str],
+    ) -> tuple[dict[str, Any], bool]:
+        return MOCK_LOW_PRIORITY_LOADER_SETTINGS, True
+
+
+class SC_MockHighPriorityLoader(SC_LoaderBase):
+
+    enabled = False
+    priority = 17
+
+    @classmethod
+    def load_settings(
+        cls, prefix: str, settings_names: list[str],
+    ) -> tuple[dict[str, Any], bool]:
+        return MOCK_HIGH_PRIORITY_LOADER_SETTINGS, True
 
 
 class SC_TestAttrLoader(SC_LoaderFromAttribs):

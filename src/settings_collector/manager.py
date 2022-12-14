@@ -69,11 +69,18 @@ class SC_LoadersManager:
     def _get_loaders(
         cls,
         settings_collector: Type[SettingsCollector],
+        *,
+        reverse=False,
     ) -> Iterable[Type[Any]]:
         """
         Return a generator of settings loader classes.
 
         For arguments, see :py:meth:`get_settings`.
+
+        :param settings_collector: A `SettingsCollector` (sub)class for which
+            the settings are being loaded).
+        :param reverse: Return loader classes sorted in reverse order (by
+            descending priority).
         """
         if (
             settings_collector.SC_Config.exclude
@@ -95,7 +102,9 @@ class SC_LoadersManager:
                         f" {', '.join(sorted(unknown_loaders))}",
                     )
             for loader_name, loader_class in sorted(
-                cls._loaders.items(), key=lambda it: it[1].priority,
+                cls._loaders.items(),
+                key=lambda it: it[1].priority,
+                reverse=reverse,
             ):
                 if loader_class.enabled and loader_name in include_loaders:
                     yield loader_class
@@ -119,7 +128,7 @@ class SC_LoadersManager:
         :param settings_collector: A `SettingsCollector` (sub)class for which
             the settings are being loaded.
         :param settings_names: Either `None` (meaning "all settings") or an
-            iterable of string names of the settings to load.
+            iterable of string names of the settings to load).
         :raise SC_ConfigError: Raised when attempting to use only unknown
             loaders (i.e., none of the `loaders` exist and `settings.exclude`
             is set to `False`). The logic here is that you may settings.exclude
@@ -132,13 +141,16 @@ class SC_LoadersManager:
         """
         result = dict()
         prefix = settings_collector.get_scope_prefix()
-        for settings_loader in cls._get_loaders(settings_collector):
+        load_all = settings_collector.SC_Config.load_all
+        for settings_loader in cls._get_loaders(
+            settings_collector, reverse=not load_all,
+        ):
             settings_values = settings_loader.get_settings(
                 prefix, settings_names,
             )
             if settings_values is not None:
                 cls.last_successful_loader = settings_loader
-                if settings_collector.SC_Config.load_all:
+                if load_all:
                     result.update(settings_values)
                 else:
                     return settings_values

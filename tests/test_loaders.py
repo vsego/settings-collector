@@ -91,3 +91,52 @@ class TestCustomDictLoader(TestsBase):
 
         self.assertEqual(my_settings.Foo, "bard")
         self.assertEqual(my_settings("Scope").Foo, "barman")
+
+
+class TestLoaderPriority(TestsBase):
+
+    @unittest.mock.patch(
+        "tests.custom_loaders.SC_MockLowPriorityLoader.enabled", True,
+    )
+    @unittest.mock.patch(
+        "tests.custom_loaders.SC_MockHighPriorityLoader.enabled", True,
+    )
+    def test_loader_priority_load_all_true(self):
+
+        class my_settings(SettingsCollector):
+            class SC_Config:
+                load_all = True
+            defaults = {
+                "common": "common default",
+                "low_only": "low default",
+                "high_only": "high default",
+                "neither": "neither default",
+            }
+
+        self.assertEqual(my_settings.common, "common high")
+        self.assertEqual(my_settings.low_only, "low")
+        self.assertEqual(my_settings.high_only, "high")
+        self.assertEqual(my_settings.neither, "neither default")
+
+    @unittest.mock.patch(
+        "tests.custom_loaders.SC_MockLowPriorityLoader.enabled", True,
+    )
+    @unittest.mock.patch(
+        "tests.custom_loaders.SC_MockHighPriorityLoader.enabled", True,
+    )
+    def test_loader_priority_load_all_false(self):
+
+        class my_settings(SettingsCollector):
+            class SC_Config:
+                load_all = False
+            defaults = {
+                "common": "common default",
+                "low_only": "low default",
+                "high_only": "high default",
+                "neither": "neither default",
+            }
+
+        self.assertEqual(my_settings.common, "common high")
+        self.assertEqual(my_settings.low_only, "low default")
+        self.assertEqual(my_settings.high_only, "high")
+        self.assertEqual(my_settings.neither, "neither default")
