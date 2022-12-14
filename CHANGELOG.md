@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added changelog URL to PyPI project
 - Added `sc_settings`
 
+### Fixed
+
+- Fixed handling of loaders' priorities when `load_all=True`
+
 ## [1.1.0] - 2022-12-12
 
 ### Added 
