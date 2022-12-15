@@ -4,7 +4,7 @@ Decorator for populating default argument values from settings collector.
 
 from functools import wraps
 import inspect
-from typing import Optional, Any, Callable
+from typing import Optional, Any, Callable, Type
 
 from .collector import SettingsCollector
 
@@ -35,7 +35,7 @@ def _get_arg(
 
 
 def sc_defaults(
-    settings_collector: SettingsCollector,
+    settings_collector: Type[SettingsCollector],
     *, scope_arg: Optional[str] = None,
 ) -> Callable:
     """
