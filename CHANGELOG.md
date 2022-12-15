@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fixed typing by adding `py.typed` marker
 - Fixed wrong type of `settings_collector` argument in `sc_defaults`
+- Updated Python version in `pyproject.toml`
 
 ## [1.2.0] - 2022-12-14
 
